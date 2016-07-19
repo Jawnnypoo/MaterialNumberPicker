@@ -61,6 +61,7 @@ public class MaterialNumberPicker extends NumberPicker {
 
     //Cache fields since reflection is kinda slow
     private Field mPickerDividerField;
+    private Field mMaximumFlingVelocityField;
     private Paint mSelectorWheelPaint;
 
     public MaterialNumberPicker(Context context) {
@@ -208,6 +209,29 @@ public class MaterialNumberPicker extends NumberPicker {
     public void setTextSize(float textSize) {
         mTextSize = textSize;
         updateTextAttributes();
+    }
+
+    /**
+     * Set the maximum fling velocity. This basically makes it where items scroll faster.
+     * @param maximumFlingVelocity the maximum fling velocity
+     * @return true if it worked, false otherwise
+     */
+    public boolean setMaximumFlingVelocity(int maximumFlingVelocity) {
+        if (mMaximumFlingVelocityField == null) {
+            try {
+                Field field = NumberPicker.class.getDeclaredField("mMaximumFlingVelocity");
+                field.setAccessible(true);
+                mMaximumFlingVelocityField = field;
+            } catch (Exception e) {
+                return false;
+            }
+        }
+        try {
+            mMaximumFlingVelocityField.set(this, maximumFlingVelocity);
+        } catch (Exception e) {
+            return false;
+        }
+        return true;
     }
 
     private void updateTextAttributes() {

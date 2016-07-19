@@ -10,12 +10,15 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewConfiguration;
 import android.widget.Button;
 import android.widget.NumberPicker;
 
 import biz.kasual.materialnumberpicker.MaterialNumberPicker;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+
+    private MaterialNumberPicker mMaterialNumberPicker;
 
     private Button mDefaultButton;
     private Button mSimpleButton;
@@ -28,6 +31,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        mMaterialNumberPicker = (MaterialNumberPicker) findViewById(R.id.material_number_picker);
+
         mDefaultButton = (Button)findViewById(R.id.default_number_picker_button);
         mSimpleButton = (Button)findViewById(R.id.simple_number_picker_button);
         mCustomButton = (Button)findViewById(R.id.custom_number_picker_button);
@@ -35,6 +40,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mDefaultButton.setOnClickListener(this);
         mSimpleButton.setOnClickListener(this);
         mCustomButton.setOnClickListener(this);
+
+        ViewConfiguration configuration = ViewConfiguration.get(this);
+        //This would be a good value to start with, then / or * to adjust
+        //By default, the velocity is divided by 8, so do what you want to adjust
+        int maxFlingVelocity =  configuration.getScaledMaximumFlingVelocity() / 6;
+        mMaterialNumberPicker.setMaximumFlingVelocity(maxFlingVelocity);
     }
 
     @Override
